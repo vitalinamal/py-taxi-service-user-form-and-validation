@@ -97,7 +97,7 @@ class DriverUpdateView(LoginRequiredMixin, generic.UpdateView):
 
 class DriverDetailView(LoginRequiredMixin, generic.DetailView):
     model = Driver
-    queryset = Driver.objects.all().prefetch_related("cars__manufacturer")
+    queryset = Driver.objects.prefetch_related("cars__manufacturer")
 
 
 class DriverDeleteView(LoginRequiredMixin, generic.DeleteView):
@@ -109,7 +109,7 @@ class AssignOrRemoveDriverView(LoginRequiredMixin, generic.View):
     def post(self, request, pk):
         car = Car.objects.get(pk=pk)
         user = request.user
-        if user in car.drivers.all():
+        if car.drivers.filter(pk=user.pk).exists():
             car.drivers.remove(user)
         else:
             car.drivers.add(user)
