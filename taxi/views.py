@@ -114,4 +114,3 @@ class AssignOrRemoveDriverView(LoginRequiredMixin, generic.View):
         else:
             car.drivers.add(user)
         return redirect("taxi:car-detail", pk=pk)
-
